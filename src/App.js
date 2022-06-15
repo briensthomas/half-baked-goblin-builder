@@ -17,7 +17,7 @@ function App() {
     {
       name: 'Goblin 1',
       hp: '5',
-      color: 'green'
+      color: 'purple'
     }
   ]);
   const [goblinFormName, setGoblinFormName] = useState('Boblin');
