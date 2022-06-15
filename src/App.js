@@ -13,28 +13,45 @@ function App() {
       goblinFormHP, which is how we track the user input for the current HP of the goblin in the form
       goblinFormColor, which is how we track the user input for the current color of the goblin in the form
 */
-  const [allGoblins, setAllGoblins] = useState([]);
+  const [allGoblins, setAllGoblins] = useState([
+    {
+      name: 'Goblin 1',
+      hp: '5',
+      color: 'green'
+    }
+  ]);
   const [visibleGoblins, setVisibleGoblins] = useState([]);
-  const [goblinFOrmName, setGoblinFormName] = useState();
-  const [goblinFormHP, setGoblinFormHP] = useState();
-  const [goblinFormColor, setGoblinFormColor] = useState();
+  const [goblinFormName, setGoblinFormName] = useState('Boblin');
+  const [goblinFormHP, setGoblinFormHP] = useState('5');
+  const [goblinFormColor, setGoblinFormColor] = useState('lightgreen');
 
   function submitGoblin(e) {
     e.preventDefault();
     
-    // on submit, make a new goblin object with a name that comes from the form state, an hp that comes from the form state, and a color that comes from the form state
-
+    // on submit, make a new goblin object with a name that comes from the form state,
+    // an hp that comes from the form state, and a color that comes from the 
+    // form state
+    const goblin = {
+      name: goblinFormName,
+      hp: goblinFormHP,
+      color: goblinFormColor,
+    };
     // update the allGoblins array. Add the new goblin to the allGoblins array immutably.
-    
-    // clear out the goblin form state items by setting them to empty strings. This will cause the form to reset in the UI.
+    setAllGoblins([...allGoblins, goblin]);
+    // clear out the goblin form state items by setting them to empty strings. 
+    // This will cause the form to reset in the UI.
+    setGoblinFormName('');
+    setGoblinFormHP('');
+    setGoblinFormColor('');
   }
 
   function handleDeleteGoblin(name) {
     // find the index of the goblin in allGoblins with this name
-
+    const index = allGoblins.findIndex(goblin => goblin.name === name);
     // use splice to delete the goblin object at this index
-
+    allGoblins.splice(index, 1);
     // update the allGoblins array immutably to this new, smaller array
+    setAllGoblins([...allGoblins]);
   }
 
   function handleFilterGoblins(search) {
@@ -50,9 +67,12 @@ function App() {
       <div className='current-goblin quarter'>
         <Goblin goblin={{
           /* 
-            use the goblin form state to make a goblin object and to display it. 
-            This will let the user see the current form state 
+          use the goblin form state to make a goblin object and to display it. 
+          This will let the user see the current form state 
           */
+          name: goblinFormName,
+          hp: goblinFormHP,
+          color: goblinFormColor
         }}/>
       </div>
       <div className='goblin-filter quarter'>
@@ -72,10 +92,21 @@ function App() {
           goblinFormHP, 
           setGoblinFormHP,
         */
+        submitGoblin={submitGoblin}
+        goblinFormName={goblinFormName} 
+        setGoblinFormName={setGoblinFormName}
+        goblinFormColor={goblinFormColor}
+        setGoblinFormColor={setGoblinFormColor}
+        goblinFormHP={goblinFormHP}
+        setGoblinFormHP={setGoblinFormHP}
       />
       <GoblinList 
-        goblins={[]} // this takes in an array of goblins. If the filteredGoblins has a length, use that array. Otherwise, use the allGoblins array 
-        handleDeleteGoblin={handleDeleteGoblin} // note that the goblin list has access to the ability to delete
+        // this takes in an array of goblins. If the filteredGoblins 
+        // has a length, use that array. Otherwise, use the allGoblins array 
+        // note that the goblin list has access to the 
+        // ability to delete
+        allGoblins={allGoblins} 
+        handleDeleteGoblin={handleDeleteGoblin} 
       />
     </div>
   );
